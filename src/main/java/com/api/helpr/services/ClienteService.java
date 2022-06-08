@@ -10,6 +10,7 @@ import com.api.helpr.domain.Cliente;
 import com.api.helpr.domain.dtos.ClienteDTO;
 import com.api.helpr.repositories.ClienteRepository;
 import com.api.helpr.repositories.PessoaRepository;
+import com.api.helpr.services.exceptions.DataIntegrityViolationException;
 import com.api.helpr.services.exceptions.ObjectNotFoundException;
 
 
@@ -50,6 +51,16 @@ public class ClienteService {
 		validaCpfEEmail(objDto);
 		oldObj = new Cliente(objDto);
 		return repository.save(oldObj);
+	}
+
+	public void delete(Integer id) {
+		Cliente obj = findById(id);
+		if(obj.getChamados().size() > 0) {
+			throw new DataIntegrityViolationException("O Cliente: "+
+		id+" tem chamados no sistema: "+
+		obj.getChamados().size());
+		}
+		repository.deleteById(id);
 	}
 	
 	
