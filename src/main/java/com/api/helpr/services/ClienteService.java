@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.helpr.domain.Cliente;
+import com.api.helpr.domain.dtos.ClienteDTO;
 import com.api.helpr.repositories.ClienteRepository;
 import com.api.helpr.repositories.PessoaRepository;
 import com.api.helpr.services.exceptions.ObjectNotFoundException;
@@ -15,7 +16,7 @@ import com.api.helpr.services.exceptions.ObjectNotFoundException;
 @Service
 public class ClienteService {
 	
-	
+	@Autowired
 	private ClienteRepository repository;
 	
 	@Autowired 
@@ -30,6 +31,20 @@ public class ClienteService {
 	public List<Cliente> findAllClientes() {
 		return repository.findAll();
 	}
+	
+	public Cliente create(ClienteDTO objDto) {
+		objDto.setId(null);
+		validaCpfEEmail(objDto);
+		Cliente newObj = new Cliente(objDto);
+		return repository.save(newObj);
+	}
+
+	private void validaCpfEEmail(ClienteDTO objDto) {
+		
+		
+	}
+	
+	
 	
 	
 
